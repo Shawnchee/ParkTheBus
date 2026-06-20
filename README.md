@@ -8,7 +8,7 @@ Park The Bus is a fully peer-to-peer prediction market. Bettors post a **Request
 
 **Zero house edge. Zero AMM. Real humans quoting real odds.**
 
-> **Status:** Hackathon MVP targeting **Solana devnet**. The on-chain program is complete, audited, and covered by 26 LiteSVM tests. The web app and AI advisor run today against bundled/mock data; full devnet deployment + live demo is the final step (see [Project status](#project-status)).
+> **Status:** Hackathon MVP, **live on Solana devnet**. The `parkthebus` program is deployed and initialized, the web app runs against it with real on-chain RFQs in the feed, and the contract is covered by 26 LiteSVM tests (see [Project status](#project-status)).
 
 ---
 
@@ -289,11 +289,11 @@ API keys are **only ever used server-side** and never reach the browser.
 
 Park The Bus is a hackathon MVP. Honest snapshot:
 
-- ✅ **On-chain program** — complete (11 instructions, 7 account types), audited across three review passes, **26 LiteSVM tests passing**. Funds proven conserved across all settlement outcomes; no path lets a single party force a payout.
-- ✅ **Web app** — all 7 pages and the full RFQ → quote → accept → settle flow are built; the AI advisor is wired end-to-end (frontend → proxy → Gemini) with mock fallback.
-- ⏳ **Devnet deployment** — pending. The program is built and configured for devnet under the reserved program ID above, but deploying the ~340 KB program from this machine has been blocked by RPC rate-limiting; it is the final step before a live, Explorer-verifiable demo.
+- ✅ **On-chain program** — deployed to **devnet** under the program ID above and initialized with the council Config. 11 instructions, 7 account types, audited across three review passes, **26 LiteSVM tests passing**. Funds proven conserved across all settlement outcomes; no path lets a single party force a payout.
+- ✅ **Web app** — all 7 pages and the full RFQ → quote → accept → settle flow are built; the feed reads live RFQ accounts straight from the chain, and the AI advisor is wired end-to-end (frontend → proxy → Gemini) with mock fallback.
+- ✅ **Live demo data** — the devnet feed is seeded with open RFQs (standard, custom, and a parlay) so the market isn't empty.
 
-In other words: the contract logic is done and tested, the app runs, and the remaining work is the on-chain deploy + seeding for a live demo.
+Remaining for production: mainnet deployment behind a security audit, USDC settlement, and scaling the council (see [Roadmap](#roadmap)).
 
 ---
 
