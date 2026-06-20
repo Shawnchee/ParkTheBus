@@ -8,6 +8,7 @@ import { useProgram, enumKey } from '../lib/anchor'
 import { fmtSol } from '../lib/format'
 import StatusBadge from '../components/StatusBadge'
 import OddsDisplay from '../components/OddsDisplay'
+import ExplorerLink from '../components/ExplorerLink'
 
 export default function Portfolio() {
   const { publicKey } = useWallet()
@@ -84,7 +85,17 @@ export default function Portfolio() {
             const id = (p.account.rfqId as BN).toNumber()
             const role = p.account.bettor.toBase58() === me ? 'Bettor' : 'Market maker'
             return (
-              <Row key={p.publicKey.toBase58()} to={`/rfq/${id}`}>
+              <Row
+                key={p.publicKey.toBase58()}
+                to={`/rfq/${id}`}
+                explorer={
+                  <ExplorerLink
+                    address={p.publicKey}
+                    label="On-chain"
+                    title="View this position account on Solana Explorer"
+                  />
+                }
+              >
                 <div>
                   <span className="font-mono text-xs text-text-muted">#{id}</span>{' '}
                   <span className="chip border-border text-text-muted">{role}</span>
@@ -107,7 +118,17 @@ export default function Portfolio() {
           rfqs.map((r) => {
             const id = (r.account.rfqId as BN).toNumber()
             return (
-              <Row key={r.publicKey.toBase58()} to={`/rfq/${id}`}>
+              <Row
+                key={r.publicKey.toBase58()}
+                to={`/rfq/${id}`}
+                explorer={
+                  <ExplorerLink
+                    address={r.publicKey}
+                    label="On-chain"
+                    title="View this RFQ account on Solana Explorer"
+                  />
+                }
+              >
                 <span>
                   <span className="font-mono text-xs text-text-muted">#{id}</span>{' '}
                   {r.account.eventDescription}
@@ -129,7 +150,17 @@ export default function Portfolio() {
           quotes.map((q) => {
             const id = (q.account.rfqId as BN).toNumber()
             return (
-              <Row key={q.publicKey.toBase58()} to={`/rfq/${id}`}>
+              <Row
+                key={q.publicKey.toBase58()}
+                to={`/rfq/${id}`}
+                explorer={
+                  <ExplorerLink
+                    address={q.publicKey}
+                    label="On-chain"
+                    title="View this quote account on Solana Explorer"
+                  />
+                }
+              >
                 <span className="font-mono text-xs text-text-muted">RFQ #{id}</span>
                 <div className="flex items-center gap-3">
                   <OddsDisplay bps={(q.account.offeredOddsBps as BN).toNumber()} />
@@ -160,14 +191,25 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
     </div>
   )
 }
-function Row({ to, children }: { to: string; children: ReactNode }) {
+function Row({
+  to,
+  explorer,
+  children,
+}: {
+  to: string
+  explorer?: ReactNode
+  children: ReactNode
+}) {
+  // Overlay the navigation Link behind the content so the explorer link can be
+  // a real <a> sibling rather than an invalid nested anchor.
   return (
-    <Link
-      to={to}
-      className="card flex items-center justify-between gap-3 p-3 text-sm transition hover:border-accent/40"
-    >
-      {children}
-    </Link>
+    <div className="card relative flex items-center gap-3 p-3 text-sm transition hover:border-accent/40">
+      <Link to={to} className="absolute inset-0" aria-label="View details" />
+      <div className="pointer-events-none relative flex flex-1 items-center justify-between gap-3">
+        {children}
+      </div>
+      {explorer && <div className="relative shrink-0">{explorer}</div>}
+    </div>
   )
 }
 function Empty({ children }: { children: ReactNode }) {

@@ -6,7 +6,7 @@ import BN from 'bn.js'
 import { useRfq, useQuotes, usePosition } from '../hooks/useData'
 import { useActions } from '../hooks/useActions'
 import { enumKey } from '../lib/anchor'
-import { mmVaultPda } from '../lib/pdas'
+import { mmVaultPda, positionPda, rfqPda } from '../lib/pdas'
 import { isCouncil } from '../config'
 import { fmtSol, oddsToBps, collateralFor, timeLeft, shortAddr, vaultFree } from '../lib/format'
 import { aiMmAssistant } from '../lib/api'
@@ -15,6 +15,7 @@ import OddsDisplay from '../components/OddsDisplay'
 import QuoteList from '../components/QuoteList'
 import AIAdvisor from '../components/AIAdvisor'
 import ContractSummaryModal from '../components/ContractSummaryModal'
+import ExplorerLink from '../components/ExplorerLink'
 import { ArrowLeft, ArrowRight, Layers } from '../components/Icon'
 
 export default function RFQDetail() {
@@ -116,8 +117,15 @@ export default function RFQDetail() {
               )}
               {custom && <span className="chip border-warning/30 bg-warning/5 text-warning">Custom</span>}
             </div>
-            <div className="mt-1 font-mono text-xs text-text-muted">
-              RFQ #{rfqId} · {rfq.matchId} · by {shortAddr(rfq.bettor.toBase58())}
+            <div className="mt-1 flex flex-wrap items-center gap-2 font-mono text-xs text-text-muted">
+              <span>
+                RFQ #{rfqId} · {rfq.matchId} · by {shortAddr(rfq.bettor.toBase58())}
+              </span>
+              <ExplorerLink
+                address={rfqPda(rfqId)}
+                label="RFQ on-chain"
+                title="View this RFQ account on Solana Explorer"
+              />
             </div>
           </div>
           <div className="flex flex-col items-end gap-1">
@@ -191,7 +199,14 @@ export default function RFQDetail() {
         <div className="card border-sky/30 p-5">
           <div className="flex items-center justify-between">
             <div className="label">Position</div>
-            <StatusBadge status={position.status} />
+            <div className="flex items-center gap-2">
+              <ExplorerLink
+                address={positionPda(rfqPda(rfqId))}
+                label="Position on-chain"
+                title="View this matched position account on Solana Explorer"
+              />
+              <StatusBadge status={position.status} />
+            </div>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <Stat label="Matched odds" node={<OddsDisplay bps={(position.matchedOddsBps as BN).toNumber()} />} />

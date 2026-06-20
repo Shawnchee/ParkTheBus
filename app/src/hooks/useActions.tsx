@@ -3,6 +3,7 @@ import { BN } from '@coral-xyz/anchor'
 import { PublicKey, SystemProgram } from '@solana/web3.js'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useToast } from '../components/Toast'
+import ExplorerLink from '../components/ExplorerLink'
 import { useProgram } from '../lib/anchor'
 import {
   configPda,
@@ -13,7 +14,6 @@ import {
   rfqPda,
   settlementPda,
 } from '../lib/pdas'
-import { explorerTx } from '../config'
 
 export type EventTypeArg = 'standard' | 'custom'
 export type OutcomeArg = 'bettorWins' | 'mmWins' | 'void'
@@ -72,16 +72,7 @@ export function useActions() {
         toast.update(id, {
           kind: 'success',
           title: `${title} confirmed`,
-          body: (
-            <a
-              className="text-accent underline"
-              href={explorerTx(sig)}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on Explorer ↗
-            </a>
-          ),
+          body: <ExplorerLink tx={sig} label="View transaction" />,
         })
         return sig
       } catch (e) {

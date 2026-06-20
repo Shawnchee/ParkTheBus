@@ -19,6 +19,7 @@ import {
 } from '../lib/format'
 import StatusBadge from '../components/StatusBadge'
 import OddsDisplay from '../components/OddsDisplay'
+import ExplorerLink from '../components/ExplorerLink'
 import {
   Bolt,
   Plus,
@@ -536,7 +537,14 @@ function PositionsTable({ positions, rfqs }: { positions: any[]; rfqs: any[] }) 
                   >
                     {rfq?.account.eventDescription ?? `RFQ #${id}`}
                   </Link>
-                  <div className="font-mono text-2xs text-text-muted">#{id}</div>
+                  <div className="mt-0.5 flex items-center gap-2">
+                    <span className="font-mono text-2xs text-text-muted">#{id}</span>
+                    <ExplorerLink
+                      address={p.publicKey}
+                      label="On-chain"
+                      title="View this position account on Solana Explorer"
+                    />
+                  </div>
                 </td>
                 <td className="px-3 py-3 text-right">
                   <OddsDisplay bps={(p.account.matchedOddsBps as BN).toNumber()} />

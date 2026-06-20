@@ -4,6 +4,7 @@ import type { QuoteAccount } from '../lib/anchor'
 import { fmtSol } from '../lib/format'
 import OddsDisplay from './OddsDisplay'
 import ReputationBadge from './ReputationBadge'
+import ExplorerLink from './ExplorerLink'
 
 export default function QuoteList({
   quotes,
@@ -58,6 +59,11 @@ export default function QuoteList({
               </span>
               <div className="flex flex-col items-start gap-1">
                 <ReputationBadge wallet={mm} />
+                <ExplorerLink
+                  address={q.publicKey}
+                  label="Quote on-chain"
+                  title="View this quote account on Solana Explorer"
+                />
                 {backed === false && (
                   <span className="chip border-danger/30 bg-danger/5 text-danger">
                     Unbacked · vault {fmtSol(free ?? 0)}
