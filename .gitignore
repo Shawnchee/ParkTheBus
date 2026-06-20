@@ -1,0 +1,31 @@
+# Solana / Anchor
+.anchor/
+target/
+test-ledger/
+**/*.rs.bk
+
+# Keypairs & secrets — never commit (devnet test keys live in wallets/)
+wallets/
+*.env
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# Agent / tooling artifacts — not part of the deployable project
+.superstack/
+.playwright-mcp/
+.claude/
+.vercel/
+
+# Local build helper scripts (root only — keep app/scripts)
+/scripts/
+
+# Working images not referenced by the app
+/home.png
+/hero.jpeg

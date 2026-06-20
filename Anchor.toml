@@ -1,0 +1,18 @@
+[toolchain]
+package_manager = "npm"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+parkthebus = "6xzNc5rA9bMi8DzH1ZMp1CKrnC51XvurYTX5ygaGqm2i"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "cargo test"
+
+[hooks]
