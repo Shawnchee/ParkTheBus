@@ -4,13 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Warm ivory base — Claude palette, bright but not stark white
-        bg: '#F0EDE4',
-        surface: '#FBFAF5',
-        'surface-2': '#F4F1E8',
-        'surface-3': '#EAE6DA',
-        border: '#E4DFD1',
-        'border-strong': '#D2CBB9',
+        // Bright warm base — Claude palette, white cards on a soft ivory page
+        bg: '#F5F4EF',
+        surface: '#FFFFFF',
+        'surface-2': '#F2F1EB',
+        'surface-3': '#E9E7DE',
+        border: '#E5E1D6',
+        'border-strong': '#D3CCBC',
 
         // Claude coral — the single primary accent
         accent: '#D97757',
