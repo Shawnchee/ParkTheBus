@@ -25,12 +25,16 @@ const u64le = (n: number) => new anchor.BN(n).toArrayLike(Buffer, 'le', 8)
 const pda = (seeds: (Buffer | Uint8Array)[]) =>
   PublicKey.findProgramAddressSync(seeds, PROGRAM_ID)[0]
 
-// Fresh live markets — all standard so they're immediately Open + quotable.
+// Fresh markets tied to tomorrow's fixtures, expiring 2 hours out.
+// Standard events are immediately Open + quotable; the custom one goes to the
+// council for approval (shows the custom-market flow).
 const TWO_HOURS = 2 * 60 * 60
+const STANDARD = { standard: {} }
+const CUSTOM = { custom: {} }
 const LIVE = [
-  { match: 'WC-BRA-POR', desc: 'Brazil WIN', stake: 0.5, odds: 2.1 },
-  { match: 'WC-ARG-CRO', desc: 'Argentina WIN', stake: 0.4, odds: 1.85 },
-  { match: 'WC-ESP-GER', desc: 'Over 2.5 goals (Spain v Germany)', stake: 0.3, odds: 1.95 },
+  { match: 'WC-GER-CIV', desc: 'Germany WIN', type: STANDARD, stake: 0.4, odds: 1.8 },
+  { match: 'WC-NED-SWE', desc: 'Over 2.5 goals (Netherlands v Sweden)', type: STANDARD, stake: 0.3, odds: 1.95 },
+  { match: 'WC-ECU-CUR', desc: 'A Curaçao player to cry on their World Cup debut', type: CUSTOM, stake: 0.15, odds: 6.0 },
 ]
 
 async function main() {
@@ -55,7 +59,7 @@ async function main() {
     const args = {
       matchId: d.match,
       eventDescription: d.desc,
-      eventType: { standard: {} },
+      eventType: d.type,
       stake: new anchor.BN(Math.round(d.stake * 1e9)),
       minOddsBps: new anchor.BN(Math.round(d.odds * 10000)),
       expiresAt: new anchor.BN(now + TWO_HOURS),
