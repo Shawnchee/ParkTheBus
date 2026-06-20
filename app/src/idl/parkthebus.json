@@ -1,0 +1,1876 @@
+{
+  "address": "6xzNc5rA9bMi8DzH1ZMp1CKrnC51XvurYTX5ygaGqm2i",
+  "metadata": {
+    "name": "parkthebus",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "accept_quote",
+      "docs": [
+        "Bettor accepts a quote: escrows stake + pulls MM collateral, opens a position."
+      ],
+      "discriminator": [
+        129,
+        61,
+        5,
+        81,
+        46,
+        253,
+        210,
+        152
+      ],
+      "accounts": [
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "quote",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  113,
+                  117,
+                  111,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              },
+              {
+                "kind": "account",
+                "path": "market_maker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "market_maker"
+        },
+        {
+          "name": "mm_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  109,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market_maker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "position",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bettor",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "rfq"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "approve_market",
+      "docs": [
+        "Council member approves/rejects a custom-event RFQ awaiting review."
+      ],
+      "discriminator": [
+        195,
+        83,
+        73,
+        224,
+        150,
+        237,
+        150,
+        5
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "council_member",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "approved",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "cancel_rfq",
+      "docs": [
+        "Bettor cancels an unmatched RFQ (refunds deposit + rent)."
+      ],
+      "discriminator": [
+        65,
+        47,
+        228,
+        229,
+        50,
+        93,
+        212,
+        236
+      ],
+      "accounts": [
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bettor",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "rfq"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deposit_collateral",
+      "docs": [
+        "Market maker tops up their collateral vault (quotes stay free)."
+      ],
+      "discriminator": [
+        156,
+        131,
+        142,
+        116,
+        146,
+        247,
+        162,
+        120
+      ],
+      "accounts": [
+        {
+          "name": "mm_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  109,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market_maker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "market_maker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "execute_settlement",
+      "docs": [
+        "Permissionless: release escrow once a settlement has the required votes."
+      ],
+      "discriminator": [
+        237,
+        120,
+        82,
+        62,
+        224,
+        193,
+        147,
+        137
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "position",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              }
+            ]
+          }
+        },
+        {
+          "name": "settlement",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  116,
+                  116,
+                  108,
+                  101,
+                  109,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bettor",
+          "writable": true,
+          "relations": [
+            "position"
+          ]
+        },
+        {
+          "name": "market_maker",
+          "writable": true,
+          "relations": [
+            "position"
+          ]
+        },
+        {
+          "name": "bettor_rep",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bettor"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mm_rep",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market_maker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "cranker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "expire_rfq",
+      "docs": [
+        "Permissionless crank: clean up an expired, unmatched RFQ (refunds the bettor)."
+      ],
+      "discriminator": [
+        231,
+        183,
+        186,
+        79,
+        195,
+        167,
+        30,
+        23
+      ],
+      "accounts": [
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bettor",
+          "writable": true,
+          "relations": [
+            "rfq"
+          ]
+        },
+        {
+          "name": "cranker",
+          "docs": [
+            "Whoever cranks the expiry (pays the tx fee)."
+          ],
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "One-time setup: registers the council + vote threshold and the RFQ counter."
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "council",
+          "type": {
+            "vec": "pubkey"
+          }
+        },
+        {
+          "name": "threshold",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "post_rfq",
+      "docs": [
+        "Bettor posts an RFQ (locks the spam-prevention deposit)."
+      ],
+      "discriminator": [
+        214,
+        57,
+        240,
+        30,
+        68,
+        131,
+        117,
+        222
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.rfq_counter",
+                "account": "Config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bettor",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "PostRfqArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "record_leg_result",
+      "docs": [
+        "Council member records one parlay leg's result (Won/Lost) as matches play."
+      ],
+      "discriminator": [
+        202,
+        17,
+        230,
+        130,
+        76,
+        231,
+        45,
+        145
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "position",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              }
+            ]
+          }
+        },
+        {
+          "name": "council_member",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "leg_index",
+          "type": "u8"
+        },
+        {
+          "name": "won",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "sign_settlement",
+      "docs": [
+        "Council member votes on a matched position's outcome (threshold-gated)."
+      ],
+      "discriminator": [
+        248,
+        106,
+        168,
+        68,
+        73,
+        154,
+        171,
+        250
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "rfq",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "position",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              }
+            ]
+          }
+        },
+        {
+          "name": "settlement",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  116,
+                  116,
+                  108,
+                  101,
+                  109,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              }
+            ]
+          }
+        },
+        {
+          "name": "council_member",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": {
+            "defined": {
+              "name": "SettlementOutcome"
+            }
+          }
+        },
+        {
+          "name": "evidence_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "submit_quote",
+      "docs": [
+        "Market maker submits a free competing quote."
+      ],
+      "discriminator": [
+        230,
+        121,
+        122,
+        202,
+        228,
+        6,
+        91,
+        181
+      ],
+      "accounts": [
+        {
+          "name": "rfq",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  102,
+                  113
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq.rfq_id",
+                "account": "RfqAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "quote",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  113,
+                  117,
+                  111,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "rfq"
+              },
+              {
+                "kind": "account",
+                "path": "market_maker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "market_maker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "offered_odds_bps",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "MmVault",
+      "discriminator": [
+        222,
+        94,
+        182,
+        238,
+        210,
+        74,
+        166,
+        35
+      ]
+    },
+    {
+      "name": "PositionAccount",
+      "discriminator": [
+        60,
+        125,
+        250,
+        193,
+        181,
+        109,
+        238,
+        86
+      ]
+    },
+    {
+      "name": "QuoteAccount",
+      "discriminator": [
+        177,
+        222,
+        119,
+        223,
+        178,
+        170,
+        167,
+        139
+      ]
+    },
+    {
+      "name": "ReputationAccount",
+      "discriminator": [
+        19,
+        185,
+        177,
+        157,
+        34,
+        87,
+        67,
+        233
+      ]
+    },
+    {
+      "name": "RfqAccount",
+      "discriminator": [
+        109,
+        52,
+        198,
+        232,
+        95,
+        22,
+        57,
+        251
+      ]
+    },
+    {
+      "name": "SettlementAccount",
+      "discriminator": [
+        81,
+        42,
+        104,
+        111,
+        123,
+        89,
+        146,
+        180
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidCouncilSize",
+      "msg": "Council size must be between 1 and MAX_COUNCIL"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidThreshold",
+      "msg": "Threshold must be a strict majority of the council and not exceed its size"
+    },
+    {
+      "code": 6002,
+      "name": "DuplicateCouncilMember",
+      "msg": "Council contains duplicate members"
+    },
+    {
+      "code": 6003,
+      "name": "BadPositionInvariant",
+      "msg": "Position payout does not equal stake + collateral (invariant broken)"
+    },
+    {
+      "code": 6004,
+      "name": "OddsTooLow",
+      "msg": "Odds must be strictly greater than 1.0x (10000 bps)"
+    },
+    {
+      "code": 6005,
+      "name": "CollateralTooLow",
+      "msg": "Collateral rounds to zero — increase stake or odds margin"
+    },
+    {
+      "code": 6006,
+      "name": "MarketNotApproved",
+      "msg": "Market is not approved for quoting"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidKickoff",
+      "msg": "Kickoff must be unset (0) or in the future"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidStake",
+      "msg": "Stake must be greater than zero"
+    },
+    {
+      "code": 6009,
+      "name": "StringTooLong",
+      "msg": "A string field exceeds its maximum length"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidExpiry",
+      "msg": "Expiry must be in the future"
+    },
+    {
+      "code": 6011,
+      "name": "RfqNotOpen",
+      "msg": "RFQ is not open for this action"
+    },
+    {
+      "code": 6012,
+      "name": "RfqAlreadyMatched",
+      "msg": "RFQ has already been matched"
+    },
+    {
+      "code": 6013,
+      "name": "RfqExpired",
+      "msg": "RFQ has expired"
+    },
+    {
+      "code": 6014,
+      "name": "QuoteBelowMinOdds",
+      "msg": "Quote odds do not meet the RFQ minimum"
+    },
+    {
+      "code": 6015,
+      "name": "KickoffPassed",
+      "msg": "Kickoff has passed; no new quotes or matches accepted"
+    },
+    {
+      "code": 6016,
+      "name": "InsufficientCollateral",
+      "msg": "Market maker has insufficient free collateral in their vault"
+    },
+    {
+      "code": 6017,
+      "name": "QuoteNotPending",
+      "msg": "Quote is not in a pending state"
+    },
+    {
+      "code": 6018,
+      "name": "MathOverflow",
+      "msg": "Numerical overflow"
+    },
+    {
+      "code": 6019,
+      "name": "WithdrawExceedsBalance",
+      "msg": "Withdraw amount exceeds free (unreserved) vault balance"
+    },
+    {
+      "code": 6020,
+      "name": "NotCouncilMember",
+      "msg": "Caller is not a council member"
+    },
+    {
+      "code": 6021,
+      "name": "AlreadyVoted",
+      "msg": "Council member has already voted on this settlement"
+    },
+    {
+      "code": 6022,
+      "name": "CouncilMemberExcluded",
+      "msg": "Council member is excluded from this market (has a position in it)"
+    },
+    {
+      "code": 6023,
+      "name": "ThresholdNotMet",
+      "msg": "Settlement has not reached the required vote threshold"
+    },
+    {
+      "code": 6024,
+      "name": "PositionNotMatched",
+      "msg": "Position is not in the expected state for settlement"
+    },
+    {
+      "code": 6025,
+      "name": "ResultMismatch",
+      "msg": "Settlement result does not match this position's event"
+    },
+    {
+      "code": 6026,
+      "name": "NotPendingApproval",
+      "msg": "RFQ is not awaiting council approval"
+    },
+    {
+      "code": 6027,
+      "name": "SettlementAlreadyExecuted",
+      "msg": "Settlement has already been executed"
+    },
+    {
+      "code": 6028,
+      "name": "OutcomeMismatch",
+      "msg": "Vote outcome does not match the proposed settlement outcome"
+    },
+    {
+      "code": 6029,
+      "name": "RfqNotExpired",
+      "msg": "RFQ has not expired yet"
+    },
+    {
+      "code": 6030,
+      "name": "CannotCancelMatched",
+      "msg": "Cannot cancel an RFQ that is already matched or settled"
+    },
+    {
+      "code": 6031,
+      "name": "InvalidParlay",
+      "msg": "Invalid parlay: needs 2-4 pending legs (or none for a single bet)"
+    },
+    {
+      "code": 6032,
+      "name": "NotAParlay",
+      "msg": "This RFQ is not a parlay"
+    },
+    {
+      "code": 6033,
+      "name": "LegIndexOutOfRange",
+      "msg": "Parlay leg index out of range"
+    }
+  ],
+  "types": [
+    {
+      "name": "ApprovalStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AutoApproved"
+          },
+          {
+            "name": "CouncilApproved"
+          },
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Rejected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Config",
+      "docs": [
+        "Singleton program configuration + global RFQ counter + council registry."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "council",
+            "type": {
+              "vec": "pubkey"
+            }
+          },
+          {
+            "name": "threshold",
+            "docs": [
+              "Votes required to settle (strict majority; 2-of-2 for MVP)."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "rfq_counter",
+            "docs": [
+              "Monotonic id assigned to each new RFQ."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Standard"
+          },
+          {
+            "name": "Custom"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LegResult",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Won"
+          },
+          {
+            "name": "Lost"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MmVault",
+      "docs": [
+        "Per-market-maker collateral vault. Program-owned so `accept_quote` can debit",
+        "it without the MM's signature. Holds rent + free collateral as native lamports;",
+        "the struct itself is intentionally tiny."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market_maker",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ParlayLeg",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "event_description",
+            "type": "string"
+          },
+          {
+            "name": "result",
+            "type": {
+              "defined": {
+                "name": "LegResult"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PositionAccount",
+      "docs": [
+        "Created on a match. Holds the entire pot (stake + collateral = payout) as",
+        "native lamports; the winner takes all at settlement."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rfq_id",
+            "type": "u64"
+          },
+          {
+            "name": "bettor",
+            "type": "pubkey"
+          },
+          {
+            "name": "market_maker",
+            "type": "pubkey"
+          },
+          {
+            "name": "stake",
+            "type": "u64"
+          },
+          {
+            "name": "collateral",
+            "type": "u64"
+          },
+          {
+            "name": "matched_odds_bps",
+            "type": "u64"
+          },
+          {
+            "name": "payout_amount",
+            "docs": [
+              "stake + collateral; held as lamports in this account above rent."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "PositionStatus"
+              }
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PositionStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Matched"
+          },
+          {
+            "name": "SettledBettorWin"
+          },
+          {
+            "name": "SettledMmWin"
+          },
+          {
+            "name": "Cancelled"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PostRfqArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "string"
+          },
+          {
+            "name": "event_description",
+            "type": "string"
+          },
+          {
+            "name": "event_type",
+            "type": {
+              "defined": {
+                "name": "EventType"
+              }
+            }
+          },
+          {
+            "name": "stake",
+            "type": "u64"
+          },
+          {
+            "name": "min_odds_bps",
+            "type": "u64"
+          },
+          {
+            "name": "expires_at",
+            "type": "i64"
+          },
+          {
+            "name": "kickoff_at",
+            "docs": [
+              "0 = no kickoff lockout for this market."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "is_parlay",
+            "type": "bool"
+          },
+          {
+            "name": "parlay_legs",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "ParlayLeg"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "QuoteAccount",
+      "docs": [
+        "A free competing quote from a market maker on one RFQ.",
+        "PDA seed = [\"quote\", rfq, market_maker] => one (improvable) quote per MM per RFQ."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rfq_id",
+            "type": "u64"
+          },
+          {
+            "name": "market_maker",
+            "type": "pubkey"
+          },
+          {
+            "name": "offered_odds_bps",
+            "type": "u64"
+          },
+          {
+            "name": "collateral_required",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "QuoteStatus"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "QuoteStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Accepted"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Expired"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReputationAccount",
+      "docs": [
+        "Per-wallet on-chain reputation (seed [\"reputation\", wallet]). Created lazily",
+        "at first settlement."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "markets_as_mm",
+            "type": "u64"
+          },
+          {
+            "name": "markets_as_bettor",
+            "type": "u64"
+          },
+          {
+            "name": "total_volume_lamports",
+            "type": "u64"
+          },
+          {
+            "name": "mm_wins",
+            "type": "u64"
+          },
+          {
+            "name": "mm_losses",
+            "type": "u64"
+          },
+          {
+            "name": "disputes_involved",
+            "type": "u64"
+          },
+          {
+            "name": "is_council_member",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RfqAccount",
+      "docs": [
+        "A Request For Quote posted by a bettor. Also escrows the spam-prevention",
+        "deposit (0.01 SOL) as native lamports inside this account."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rfq_id",
+            "type": "u64"
+          },
+          {
+            "name": "bettor",
+            "type": "pubkey"
+          },
+          {
+            "name": "match_id",
+            "type": "string"
+          },
+          {
+            "name": "event_description",
+            "type": "string"
+          },
+          {
+            "name": "event_type",
+            "type": {
+              "defined": {
+                "name": "EventType"
+              }
+            }
+          },
+          {
+            "name": "stake",
+            "type": "u64"
+          },
+          {
+            "name": "min_odds_bps",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "RfqStatus"
+              }
+            }
+          },
+          {
+            "name": "approval_status",
+            "type": {
+              "defined": {
+                "name": "ApprovalStatus"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "expires_at",
+            "type": "i64"
+          },
+          {
+            "name": "kickoff_at",
+            "docs": [
+              "Kickoff timestamp; no quotes/accepts allowed at or after this (Rule 5). 0 = unset."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "is_parlay",
+            "type": "bool"
+          },
+          {
+            "name": "parlay_legs",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "ParlayLeg"
+                }
+              }
+            }
+          },
+          {
+            "name": "deposit",
+            "type": "u64"
+          },
+          {
+            "name": "quote_count",
+            "type": "u32"
+          },
+          {
+            "name": "accepted_mm",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RfqStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "PendingApproval"
+          },
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Matched"
+          },
+          {
+            "name": "Settled"
+          },
+          {
+            "name": "Expired"
+          },
+          {
+            "name": "Cancelled"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SettlementAccount",
+      "docs": [
+        "One settlement per position (seed [\"settlement\", rfq]). Council members vote",
+        "on a single proposed outcome; once `vote_count >= config.threshold` the escrow",
+        "can be released by anyone via `execute_settlement`."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rfq_id",
+            "type": "u64"
+          },
+          {
+            "name": "position",
+            "type": "pubkey"
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "SettlementOutcome"
+              }
+            }
+          },
+          {
+            "name": "voters",
+            "type": {
+              "vec": "pubkey"
+            }
+          },
+          {
+            "name": "vote_count",
+            "type": "u8"
+          },
+          {
+            "name": "evidence_uri",
+            "type": "string"
+          },
+          {
+            "name": "executed",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SettlementOutcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "BettorWins"
+          },
+          {
+            "name": "MmWins"
+          },
+          {
+            "name": "Void"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "CONFIG_SEED",
+      "type": "bytes",
+      "value": "[99, 111, 110, 102, 105, 103]"
+    },
+    {
+      "name": "MM_VAULT_SEED",
+      "type": "bytes",
+      "value": "[109, 109, 95, 118, 97, 117, 108, 116]"
+    },
+    {
+      "name": "POSITION_SEED",
+      "type": "bytes",
+      "value": "[112, 111, 115, 105, 116, 105, 111, 110]"
+    },
+    {
+      "name": "QUOTE_SEED",
+      "type": "bytes",
+      "value": "[113, 117, 111, 116, 101]"
+    },
+    {
+      "name": "REPUTATION_SEED",
+      "type": "bytes",
+      "value": "[114, 101, 112, 117, 116, 97, 116, 105, 111, 110]"
+    },
+    {
+      "name": "RFQ_SEED",
+      "type": "bytes",
+      "value": "[114, 102, 113]"
+    },
+    {
+      "name": "SETTLEMENT_SEED",
+      "type": "bytes",
+      "value": "[115, 101, 116, 116, 108, 101, 109, 101, 110, 116]"
+    }
+  ]
+}
